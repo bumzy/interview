@@ -3,36 +3,12 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <limits.h>
-#include <vector>
-#include <algorithm>
 
 #define H_ARRAYSIZE(a) \
     ((sizeof(a) / sizeof(*(a))) / \
     static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
 
-enum
-{
-    INPUT_ERROR = -1,
-    INT_PARSE_ERROR = -1,
-    INT_PARSE_OK = 0
-};
-
-struct Mountain
-{
-    int start, end, height;
-    Mountain(int s, int e, int h) : start(s), end(e), height(h) {}
-    bool operator < (const Mountain& m) const
-    {
-        /*
-        if(start != m.start) return start < m.start;
-        else if(height != m.height) return height < m.height;
-        else return end < m.end;
-        */
-        if(end != m.end) return end < m.end;
-        else if(height != m.height) return height < m.height;
-        else return start < m.start;
-    }
-};
+enum { INPUT_ERROR = -1, INT_PARSE_ERROR = -1, INT_PARSE_OK = 0 };
 
 int resolve(const char* input);
 int nextInt(const char*& str, int& number);
@@ -60,32 +36,32 @@ int main(int argc, char* argv[])
         "2\n0,0,0\n0,0,0\n", //expect 0
         "3\n0,0,0\n0,0,0\n0,0,1\n", //expect 2
         "", //expect INPUT_ERROR
+        "1\nasdf", //expect INPUT_ERROR
+        "-1", //expect INPUT_ERROR
         };
-    int expectedSteps[] = {25, 4, 7, 10, 14, 15, 3, 12, 13, 14, 20, 0, 0, 2, 1, 2, 0, 2, INPUT_ERROR};
+    int expectedSteps[] = {25, 4, 7, 10, 14, 15, 3, 12, 13, 14, 20, 0, 0, 2, 1, 2, 0, 2, INPUT_ERROR, INPUT_ERROR, INPUT_ERROR};
     for (size_t i = 0; i < H_ARRAYSIZE(input); ++i)
     {
-        int tmp = resolve(input[i]);
-        printf("resolve: %d %d\n", tmp, expectedSteps[i]);
-        assert(tmp == expectedSteps[i]);
+        int result = resolve(input[i]);
+        printf("resolve: %d %d\n", result, expectedSteps[i]);
+        assert(result == expectedSteps[i]);
     }
     return 0;
 }
 
 int resolve(const char* input)
 {
-    if(input == NULL || input[0] == '\0')
+    if(input == NULL)
         return INPUT_ERROR;
 
     int totalNumber = -1, distance = 0, maxEnd = 0, vertical = 0;
-    std::vector<Mountain> M;
+    int start = -1, end = -1, height = -1, /*preStart = -1,*/ preEnd = -1, preHeight = -1;
+
     if(nextInt(input, totalNumber) == -1)
         return INPUT_ERROR;
 
-    if(totalNumber == 0 && *input == '\0')
-        return 0;
     for(int i = 0; i < totalNumber; ++i)
     {
-        int start, end, height;
         if(nextInt(input, start) == -1)
             return INPUT_ERROR;
         if(nextInt(input, end) == -1)
@@ -93,31 +69,30 @@ int resolve(const char* input)
         if(nextInt(input, height) == -1)
             return INPUT_ERROR;
 
-        if(start > end)
-            std::swap(start, end);
-
-        M.push_back(Mountain(start, end, height));
-    }
-    std::sort(M.begin(), M.end());
-    for(size_t i = 0; i < M.size(); ++i)
-    {
-        printf("Mountain %d: %d, %d, %d\n", i, M[i].start, M[i].end, M[i].height);
-        if(maxEnd < M[i].end)
-            maxEnd = M[i].end;
+        if(maxEnd < end)
+            maxEnd = end;
 
         if(i == 0)
-            vertical += M[i].height;
+            vertical += height;
         else
         {
-            if(M[i-1].end < M[i].start)
-                vertical += M[i].height + M[i-1].height;
+            if(preEnd < start)
+                vertical += height + preHeight;
             else
-                vertical += std::abs(M[i].height - M[i-1].height);
+                vertical += abs(height - preHeight);
         }
 
-        if(i == M.size() - 1)
-            vertical += M[i].height;
+        if(i == totalNumber - 1)
+            vertical += height;
+
+        //preStart = start;
+        preEnd = end;
+        preHeight = height;
     }
+
+    if(*input != '\0')
+        return INPUT_ERROR;
+
     distance = maxEnd + vertical;
     return distance;
 }
@@ -127,7 +102,6 @@ int nextInt(const char*& str, int& number)
 {
     char* end = NULL;
     long temp = strtol(str, &end, 10);
-    //printf("temp: %d\n", temp);
     if(str == end)
     {
         fprintf(stderr, "str is empty or does not have the expected form\n");
@@ -135,16 +109,16 @@ int nextInt(const char*& str, int& number)
     }
     else if(errno ==  ERANGE || temp < INT_MIN || temp > INT_MAX)
     {
-        fprintf(stderr, "%.*s is out of range\n", end - str, str);
+        fprintf(stderr, "%.*s is out of range\n", static_cast<int>(end - str), str);
         errno = 0;
         return INT_PARSE_ERROR;
     }
     else if(temp < 0)
     {
-        fprintf(stderr, "%.*s is negative\n", end - str, str);
+        fprintf(stderr, "%.*s is negative\n", static_cast<int>(end - str), str);
         return INT_PARSE_ERROR;
     }
-    number = (int) temp;
+    number = static_cast<int>(temp);
     while(*end == '\n' || *end == ',')
         end++;
     str = end;

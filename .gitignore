@@ -5,6 +5,7 @@
 *unittest_proxy_url*
 *unittest_string*
 *unittest_vector*
+*unittest_iniparser*
 *.ncb
 *.suo
 *.vcproj.*.user

@@ -7,16 +7,20 @@ namespace qh
     // TODO ½«ÔÚÕâÀïÐ´ÊµÏÖ´úÂë
 
     string::string()
-        : data_(NULL), len_(0)
+        //: data_(NULL), len_(0)
     {
+        len_ = 0;
+        data_ = new char[1];
+        data_[0] = '\0';
     }
 
     string::string( const char* s )
     {
         if(s == NULL)
         {
-            data_ = NULL;
             len_ = 0;
+            data_ = new char[1];
+            data_[0] = '\0';
         }
         else
         {
@@ -31,8 +35,9 @@ namespace qh
     {
         if(s == NULL)
         {
-            data_ = NULL;
             len_ = 0;
+            data_ = new char[1];
+            data_[0] = '\0';
         }
         else
         {
@@ -49,7 +54,8 @@ namespace qh
         if(rhs.data_ == NULL)
         {
             len_ = 0;
-            data_ = NULL;
+            data_ = new char[1];
+            data_[0] = '\0';
         }
         else
         {

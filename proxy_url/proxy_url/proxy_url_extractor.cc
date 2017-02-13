@@ -106,7 +106,7 @@ namespace qh
         std::string key;
         while (!token.isEnd()) {
             key = token.nextString('=');
-            //if key has char : '&',  skip back to last char '&' and reset key
+            //if '&' in key,  skip back to last char '&' and reset key
             if (key.find('&') != std::string::npos) {
                 token.skipBackTo('&');
                 key = token.nextString('=');

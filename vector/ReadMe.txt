@@ -22,7 +22,7 @@ vector<T>& operator=(const vector<T>& rhs)      时间复杂度O(n) 空间复杂
 size_t size() const                             时间复杂度O(1) 空间复杂度O(1)
 size_t capacity() const                         时间复杂度O(1) 空间复杂度O(1)
 T& operator[](size_t index)                     时间复杂度O(1) 空间复杂度O(1)
-void push_back(const T& element);               时间复杂度O(n) 空间复杂度O(n)
+void push_back(const T& element)                时间复杂度O(n) 空间复杂度O(n)
 void pop_back(T& element)                       时间复杂度O(1) 空间复杂度O(1)
 void resize(size_t size)                        时间复杂度O(n) 空间复杂度O(n)
 void reserve(size_t capacity)                   时间复杂度O(n) 空间复杂度O(n)

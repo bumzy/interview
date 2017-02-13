@@ -1,7 +1,6 @@
 #ifndef QIHOO_VECTOR_H_
 #define QIHOO_VECTOR_H_
 
-#include <stdio.h>
 #include <assert.h>
 #include <algorithm>
 
@@ -158,8 +157,6 @@ namespace qh
     template<class T>
     void vector<T>::clear()
     {
-        //delete[] data_;
-        //size_ = capacity_ = 0;
         size_ = 0;
     }
 

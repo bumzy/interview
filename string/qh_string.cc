@@ -106,7 +106,7 @@ namespace qh
 
     char& string::operator[]( size_t index )
     {
-        //assert(index < len_);
+        assert(index < len_);
         return *(data_ + index);
     }
 }

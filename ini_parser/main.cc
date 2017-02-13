@@ -255,6 +255,34 @@ void test9()
     assert(isFound == true);
 }
 
+void test10()
+{
+    const char* ini_text= "";
+    qh::INIParser parser;
+    if (!parser.Parse(ini_text, strlen(ini_text), "\n", "=")) {
+        assert(false);
+    }
+
+    bool isFound = true;
+    const std::string& a = parser.Get("a", &isFound);
+    assert(a == "");
+    assert(isFound == false);
+}
+
+void test11()
+{
+    const char* ini_text= NULL;
+    qh::INIParser parser;
+    if (!parser.Parse(ini_text, 0, "\n", "=")) {
+        assert(false);
+    }
+
+    bool isFound = true;
+    const std::string& a = parser.Get("a", &isFound);
+    assert(a == "");
+    assert(isFound == false);
+}
+
 int main(int argc, char* argv[])
 {
     //TODO 在这里添加单元测试，越多越好，代码路径覆盖率越全越好
@@ -268,6 +296,8 @@ int main(int argc, char* argv[])
     test7();
     test8();
     test9();
+    test10();
+    test11();
 
     return 0;
 }

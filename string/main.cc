@@ -85,6 +85,10 @@ void test5()
     assert(str2.size() == 3);
     assert(!strcmp("abc", str2.data()));
 
+    str2 = str2;
+    assert(str2.size() == 3);
+    assert(!strcmp("abc", str2.data()));
+
     str1 = qh::string(NULL);
     assert(str1.size() == 0);
     assert(!strcmp("", str1.data()));

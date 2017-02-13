@@ -29,7 +29,10 @@ http://localhost/query.php?name=360&address=beijing
 	-	最好能性能分析报告(gprofile or google profile)
 
 实现完成之后，将工程代码打包(注意包文件名上带上自己的姓名)发给我们，并回答下面的几个问题：
-1. 算法的时间复杂度
-2. 算法的空间复杂度
+void ProxyURLExtractor::Extract( const KeyItems& keys, const std::string& raw_url, std::string& sub_url )的长度为n
+1. 算法的时间复杂度:O(n)
+2. 算法的空间复杂度:O(n)
 3. 是否有资源泄露：内存泄露、文件句柄打开而没有关闭等等
-
+答：无资源泄露
+经 valgrind --tool=memcheck ./unittest_proxy_url 检查无内存泄露
+未使用文件句柄

@@ -37,7 +37,7 @@ std::ifstream ini_file文件句柄已关闭
 2. 尽可能详细的说清楚每个函数的时间复杂度和空间复杂度。例如INI解析器Parse过程的时间复杂度是多少？
 ini文件长度为n
 INIParser()                                                     时间复杂度O(1) 空间复杂度O(1)
-~INIParser()                                                    时间复杂度O(1) 空间复杂度O(1)
+~INIParser()                                                    时间复杂度O(n) 空间复杂度O(1)
 bool Parse(const std::string& ini_file_path)                    时间复杂度O(n) 空间复杂度O(n)
 bool Parse(const char* ini_data, size_t ini_data_len,           时间复杂度O(n) 空间复杂度O(n)
         const std::string& line_seperator,
